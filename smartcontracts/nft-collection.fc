@@ -80,15 +80,17 @@ slice calculate_nft_item_address(int wc, cell state_init) {
 
     ;;we dont need to have an owner here
     ;;throw_unless(401, equal_slices(sender_address, owner_address));
-    
+    cell body_dict = new_dict();
+    body_dict~udict_set_builder(256, "image"H, begin_cell().) ;; todo put here some image link
+    body_dict~udict_set_builder(256, "name"H, begin_cell().) ;; todo put here some name + TON NUMBER
+    body_dict~udict_set_builder(256, "description"H, begin_cell().) ;; todo put here some description + TON NUMBER + LINK TO GIT REPO
+
     deploy_nft_item(next_item_index + 1, nft_item_code, 100000, ;; todo think about 100000 
       begin_cell()
       .store_slice(sender_address)
-      .store_ref(
-        begin_cell()
-        .end_cell()
-        )
+      .store_dict(body_dict)
       .end_cell()); 
+
     
     if (is_last) {
       next_item_index += 1;
